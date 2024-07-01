@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IrrigoBot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="chat-container">
+        <div id="chatbox" class="chatbox"></div>
+        <input type="text" id="userInput" placeholder="Type your message here..." onkeydown="handleKeyDown(event)">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        function sendMessage() {
+            let userInput = document.getElementById('userInput').value;
+            if (userInput.trim() === "") return;
+
+            addMessageToChat(`Moi: ${userInput}`, 'user-message');
+
+            fetch("/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: `user_input=${encodeURIComponent(userInput)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                let botResponse = data.response;
+                addMessageToChat(`IrrigoBot: `, 'bot-message', botResponse);
+            });
+
+            document.getElementById('userInput').value = "";
+        }
+
+        function addMessageToChat(message, className, response) {
+            let chatbox = document.getElementById('chatbox');
+            let messageElement = document.createElement('div');
+            messageElement.className = `message ${className}`;
+
+            // Create title element
+            let titleElement = document.createElement('strong');
+            titleElement.textContent = message;
+            messageElement.appendChild(titleElement);
+
+            // Create content element
+            let contentElement = document.createElement('span');
+            messageElement.appendChild(contentElement);
+
+            chatbox.appendChild(messageElement);
+            chatbox.scrollTop = chatbox.scrollHeight; // Scroll to the bottom of the chat
+
+            if (className === 'bot-message') {
+                typeMessage(contentElement, response); // Call function to type message letter by letter
+            }
+        }
+
+        function typeMessage(element, message) {
+            let index = 0;
+
+            function typeNextLetter() {
+                if (index < message.length) {
+                    element.textContent += message.charAt(index); // Add each letter to the end of the message
+                    element.parentNode.scrollTop = element.parentNode.scrollHeight; // Automatically scroll to the bottom
+                    index++;
+                    setTimeout(typeNextLetter, 50); // Delay of 50ms between each letter, adjustable for typing speed
+                }
+            }
+
+            typeNextLetter(); // Start typing the message letter by letter
+        }
+
+        function handleKeyDown(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        }
+    </script>
+</body>
+</html>

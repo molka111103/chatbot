@@ -1,0 +1,174 @@
+{
+  "salutations": [
+    "bonjour", "ahla", "aslema", "salut", "hello", "hi", "hey", "coucou", "yo", "allo",
+    "bonsoir", "good morning", "good afternoon", "good evening",
+    "hi there", "howdy", "greetings"
+  ],
+  "questions_detections": [
+    {
+      "keyword": "aide",
+      "responses": {
+        "default": [
+          "Bien sûr, que puis-je faire pour vous?",
+          "Comment puis-je vous aider aujourd'hui?",
+          "Que puis-je faire pour vous aider avec vos besoins en irrigation?",
+          "Avez-vous des questions spécifiques concernant vos cultures ou votre système d'irrigation?"
+        ],
+        "oui": [
+          "Je suis là pour vous aider. Que puis-je faire pour vous?",
+          "D'accord, quelles sont vos questions ou préoccupations?",
+          "Quels problèmes rencontrez-vous et comment puis-je vous assister?"
+        ],
+        "non": [
+          "Pas de problème. Si vous avez besoin d'aide à l'avenir, je suis ici.",
+          "D'accord, n'hésitez pas à me solliciter si besoin.",
+          "Très bien, je suis là si vous avez des questions plus tard."
+        ]
+      }
+    },
+    {
+      "keyword": "température",
+      "responses": {
+        "default": [
+          "Quelle est la température actuelle dans votre région?",
+          "La température varie-t-elle beaucoup au cours de la journée?",
+          "Quels sont les extrêmes de température que vous avez connus récemment?",
+          "Avez-vous des périodes de gel ou de chaleur extrême?"
+        ],
+        "specific": [
+          {
+            "condition": "température < 0",
+            "response": "Il fait très froid. Pensez à protéger vos plantes du gel."
+          },
+          {
+            "condition": "0 <= température < 10",
+            "response": "Il fait frais. Assurez-vous que vos plantes sont bien arrosées et protégées du froid."
+          },
+          {
+            "condition": "10 <= température < 20",
+            "response": "La température est modérée. Vos plantes devraient bien se porter avec un arrosage régulier."
+          },
+          {
+            "condition": "20 <= température < 30",
+            "response": "Il fait chaud. Assurez-vous d'arroser vos plantes suffisamment pour éviter le stress hydrique."
+          },
+          {
+            "condition": "température >= 30",
+            "response": "Il fait très chaud. Arrosez vos plantes tôt le matin ou tard le soir pour minimiser l'évaporation."
+          }
+        ]
+      }
+    },
+    {
+      "keyword": "système d'irrigation",
+      "responses": {
+        "default": [
+          "Utilisez-vous déjà un système d'irrigation? Si oui, lequel?",
+          "Avez-vous envisagé des systèmes d'irrigation plus efficaces comme l'irrigation goutte à goutte?",
+          "Quels sont les principaux problèmes que vous rencontrez avec votre système d'irrigation actuel?",
+          "Souhaitez-vous des conseils pour améliorer l'efficacité de votre système d'irrigation?"
+        ],
+        "oui": [
+          "Super! Pouvez-vous me dire quel type de système d'irrigation vous utilisez et s'il y a des problèmes spécifiques?",
+          "D'accord, quels aspects de votre système d'irrigation souhaitez-vous améliorer?",
+          "Bien, comment fonctionne actuellement votre système d'irrigation?"
+        ],
+        "non": [
+          "Pas de problème. Souhaitez-vous que je vous recommande un système d'irrigation adapté à vos besoins?",
+          "D'accord, je peux vous fournir des informations sur les différents types de systèmes d'irrigation.",
+          "Très bien, n'hésitez pas à me demander si vous avez des questions sur l'irrigation."
+        ]
+      }
+    }
+  ],
+  "informations_complementaires": [
+    {
+      "type": "sols",
+      "details": [
+        {
+          "type_de_sol": "argileux",
+          "caracteristiques": "Retiennent bien l'eau, mais peuvent être mal drainés.",
+          "conseils": "Ajouter du compost pour améliorer le drainage. Éviter le sur-arrosage pour prévenir l'engorgement."
+        },
+        {
+          "type_de_sol": "sableux",
+          "caracteristiques": "Bien drainés, mais ne retiennent pas bien l'eau.",
+          "conseils": "Ajouter de la matière organique pour améliorer la rétention d'eau. Arroser plus fréquemment mais en petites quantités."
+        },
+        {
+          "type_de_sol": "limoneux",
+          "caracteristiques": "Bonne rétention d'eau et drainage.",
+          "conseils": "Utiliser un paillis pour maintenir l'humidité. Incorporer régulièrement du compost pour maintenir la fertilité."
+        },
+        {
+          "type_de_sol": "argilo-limoneux",
+          "caracteristiques": "Combine les propriétés de rétention d'eau de l'argile et le drainage du limon.",
+          "conseils": "Utiliser un équilibre de compost pour maintenir une bonne structure et fertilité."
+        }
+      ]
+    },
+    {
+      "type": "techniques_d'irrigation",
+      "details": [
+        {
+          "technique": "irrigation goutte à goutte",
+          "avantages": "Efficace en eau, idéal pour les plantes spécifiques.",
+          "inconvenients": "Peut être coûteux à installer. Nécessite un entretien régulier pour éviter les obstructions.",
+          "conseils": "Utiliser des filtres pour éviter les blocages et vérifier régulièrement les émetteurs."
+        },
+        {
+          "technique": "arrosage par aspersion",
+          "avantages": "Couverture large, bon pour les pelouses.",
+          "inconvenients": "Peut entraîner des pertes d'eau par évaporation. Moins efficace en conditions venteuses.",
+          "conseils": "Arroser tôt le matin pour réduire les pertes par évaporation et ajuster les arroseurs pour éviter les zones ventées."
+        },
+        {
+          "technique": "arrosage manuel",
+          "avantages": "Contrôle précis.",
+          "inconvenients": "Prend du temps et peut ne pas être uniforme. Peut entraîner un gaspillage d'eau si mal géré.",
+          "conseils": "Utiliser des arrosoirs avec des têtes d'arrosage pour une distribution uniforme et surveiller le débit pour éviter le gaspillage."
+        }
+      ]
+    },
+    {
+      "type": "gestion_de_l'eau",
+      "details": [
+        {
+          "technique": "récupération de l'eau de pluie",
+          "avantages": "Source d'eau gratuite et durable.",
+          "installation": "Réservoirs et systèmes de collecte. Utiliser des filtres pour éliminer les débris avant de stocker l'eau."
+        },
+        {
+          "technique": "conservation de l'eau",
+          "avantages": "Réduction des coûts d'eau, amélioration de la durabilité.",
+          "conseils": "Utiliser des paillis, des techniques d'irrigation efficientes et planter des espèces résistantes à la sécheresse."
+        }
+      ]
+    }
+  ],
+  "remerciements": {
+    "merci": [
+      "De rien, c'est un plaisir de vous aider!",
+      "Vous êtes toujours le bienvenu!",
+      "Je suis heureux d'avoir pu vous assister.",
+      "Avec plaisir!"
+    ],
+    "merci beaucoup": [
+      "Vous méritez toute mon attention!",
+      "Je suis là pour vous, n'hésitez pas.",
+      "C'est moi qui vous remercie pour votre confiance!"
+    ],
+    "merci pour votre aide": [
+      "Toujours là pour vous soutenir!",
+      "Je suis ravi d'avoir été utile.",
+      "C'est un plaisir de contribuer à votre succès!"
+    ],
+    "grand merci": [
+      "C'est un honneur de vous accompagner.",
+      "Votre gratitude me touche beaucoup!",
+      "C'est un plaisir partagé!"
+    ]
+  }
+
+}
+
