@@ -2,14 +2,19 @@ from flask import Flask, render_template, request, jsonify
 from fuzzywuzzy import fuzz
 import random
 import json
+import os
 
 app = Flask(__name__)
+last_keyword_context = None  # Global variable to store the last detected keyword context
 
 def load_chat_data(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
         return json.load(file)
 
-chat_data = load_chat_data('data.json')
+# Ensure the file path is correct
+file_path = os.path.join(os.path.dirname(__file__), 'data.json')
+chat_data = load_chat_data(file_path)
+
 salutations = chat_data.get("salutations", [])
 remerciements = chat_data.get("remerciements", {})
 
@@ -29,6 +34,7 @@ def get_temperature_response(user_input, specific_responses):
     return None
 
 def get_response(user_input):
+    global last_keyword_context
     user_input_lower = user_input.lower()
 
     # Salutations
@@ -36,14 +42,22 @@ def get_response(user_input):
         if fuzz.partial_ratio(user_input_lower, salutation.lower()) > 80:
             return f"{salutation.capitalize()}, comment puis-je vous aider?"
 
+    # Check for "oui" or "non" in the context of the last detected keyword
+    if last_keyword_context:
+        if "oui" in user_input_lower:
+            response = random.choice(last_keyword_context['responses'].get("oui", last_keyword_context['responses'].get("default", [])))
+            last_keyword_context = None  # Reset context after use
+            return response
+        elif "non" in user_input_lower:
+            response = random.choice(last_keyword_context['responses'].get("non", last_keyword_context['responses'].get("default", [])))
+            last_keyword_context = None  # Reset context after use
+            return response
+
     # Détections de questions
     for detection in chat_data.get("questions_detections", []):
         if fuzz.partial_ratio(user_input_lower, detection["keyword"].lower()) > 80:
-            if "oui" in user_input_lower:
-                return random.choice(detection['responses'].get("oui", detection['responses'].get("default", [])))
-            elif "non" in user_input_lower:
-                return random.choice(detection['responses'].get("non", detection['responses'].get("default", [])))
-            elif detection["keyword"].lower() == "température":
+            last_keyword_context = detection  # Store the current context
+            if detection["keyword"].lower() == "température":
                 temperature_response = get_temperature_response(user_input, detection["responses"].get("specific", []))
                 if temperature_response:
                     return temperature_response
